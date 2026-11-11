@@ -1,37 +1,51 @@
-# 机器学习课程设计综合实验
+# 机器学习课程设计
 
-四项视觉任务分别包含数据处理、训练、验证与提交入口。各任务使用对应的课程数据、评价指标和工作目录。
+四项图像任务的训练、推理代码与综合实验报告。下表采用报告所列提交的 Kaggle 成绩。定位用原图坐标 RMSE，越低越好。
 
-| 任务 | 主线 | Kaggle Public | Kaggle Private |
+| 任务 | 主要方法与实验 | 公开榜 | 私有榜 |
 | --- | --- | ---: | ---: |
-| [植物幼苗分类](task1/README.md) | 前景裁剪修复，ConvNeXt / EfficientNet 五折集成 | 0.9735 | 0.9735 |
-| [面部表情分类](task2/README.md) | ConvNeXt 等骨干与折外概率融合 | 0.7470 | 0.7470 |
-| [眼底中心凹定位](task3/README.md) | EfficientNet-B1 热图、血管图与 VascX 坐标融合 | 9.90927 px | 19.54239 px |
-| [DRIVE 血管分割](task4/README.md) | FR-UNet 官方权重、双阈值迭代及 FOV 过滤 | 0.81766 Dice | 0.82534 Dice |
+| [植物幼苗分类](task1/README.md) | 修复裁剪与缩放顺序，比较 ConvNeXt、EfficientNet 和五折集成 | 0.9735 | 0.9735 |
+| [面部表情分类](task2/README.md) | 比较输入分辨率，用折外预测选择 ConvNeXt 等骨干的融合权重 | 0.7470 | 0.7470 |
+| [眼底中心凹定位](task3/README.md) | 用 EfficientNet-B1 预测热图，比较血管输入与 VascX 坐标融合 | 9.90927 px | 19.54239 px |
+| [DRIVE 血管分割](task4/README.md) | 用 FR-UNet 官方权重推理，比较双阈值、视野过滤和原生分辨率 U-Net | 0.81766 Dice | 0.82534 Dice |
 
-提交编号、文件名与哈希见[平台记录](report/data/kaggle_scores.csv)。各任务的折外验证、阈值对照和历史记录限制见[证据审计](report/evidence_audit.md)。
+提交编号、文件名和哈希见 [Kaggle 记录](report/data/kaggle_scores.csv)。各任务的本地验证口径和历史记录缺项见[证据审计](report/evidence_audit.md)。
 
-## 环境和数据
+## 目录
 
-验证环境使用 Windows 上的 Python 3.13、PyTorch 2.14.0+cu126 与 CUDA GPU。建议新建虚拟环境，按 [PyTorch 安装说明](https://pytorch.org/get-started/locally/) 选择与本机 CUDA 匹配的 torch 和 torchvision，再运行：
+```text
+task1/            幼苗分类
+task2/src/        表情分类
+task3/solution/   中心凹定位
+task4/            血管分割、配置与测试
+report/           LaTeX、实验记录和图表
+requirements.txt  四项任务的依赖
+```
+
+## 环境与运行
+
+在 Windows、Python 3.13 和 PyTorch 2.14.0+cu126 环境核验过。按本机 CUDA 版本安装 [PyTorch 和 torchvision](https://pytorch.org/get-started/locally/)，再从仓库根目录安装其余依赖：
 
 ```shell
 python -m pip install -r requirements.txt
 ```
 
-课程数据从各任务链接或教师发放渠道获得。训练图像、测试图像、模型权重、课程提交文件和含学生信息的 PDF 为本地材料。各任务 README 给出相对路径、取得上游权重的方法和训练及推理命令。训练命令按任务指定的目录执行。
+按各任务说明放置从赛题或课程渠道取得的数据。表情分类的训练与推理需要 CUDA，中心凹任务的血管图和 VascX 分支还需要对应的上游依赖与权重。
 
-## 报告与核查
+| 工作目录 | 入口 |
+| --- | --- |
+| `task1/` | `train.py` 训练，`predict.py` 生成类别提交 |
+| `task2/` | `src/train.py` 按折训练，`src/predict.py` 生成测试概率，`src/ensemble.py` 融合 |
+| `task3/solution/` | `src/train.py` 训练热图模型，`src/predict.py` 输出原图坐标 |
+| `task4/` | `inference.py` 运行 FR-UNet，`vendor/reti_ves_seg/train.py` 训练原生 U-Net 对照 |
 
-- [LaTeX 主文件](report/main.tex)与[复现附录](report/chapters/reproduction.tex)。公开源码可编译去个人资料版，正式 PDF 随课程材料交付。
-- [图表脚本](report/scripts/make_figures.py)从仓库内日志和 CSV 生成图形。
-- [提交核查脚本](report/scripts/check_submissions.py)接受本地原始课程目录，检查真实提交的顺序、坐标、RLE 和哈希。
-- [逐页质量检查](report/visual_quality_check.md)记录正式版的图表来源与编译检查。
+## 实验报告
+
+[LaTeX 主文件](report/main.tex)和[复现附录](report/chapters/reproduction.tex)随仓库提供。在已安装 XeLaTeX、BibTeX、Fandol、ctex、gbt7714 和 TikZ 的环境下，从仓库根目录运行：
 
 ```shell
-python report/scripts/make_figures.py
 cd report
 latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 ```
 
-报告依赖 XeLaTeX、BibTeX、Fandol、ctex、gbt7714 与 TikZ。Windows 验证使用 Ubuntu-22.04 WSL 的 TeX Live。课程代码及模型归属详见各任务说明和 [第三方许可](task4/licenses/)。
+公开源码编译出的 PDF 位于 `report/build/main.pdf`。含学生信息的正式 PDF 随课程材料本地交付，路径为 `report/build/机器学习课程设计综合实验报告.pdf`。第三方模型和许可证见[归属说明](task4/THIRD_PARTY_NOTICES.md)，写作与证据整理的工具说明见[报告第五章](report/chapters/conclusion.tex)。

@@ -5,7 +5,7 @@
 The competition supplies 20 labelled training images and 20 unlabelled test
 images at 565x584 pixels, consistent with DRIVE. Only the supplied training
 labels are used for supervised fitting or threshold selection. The official
-DRIVE test ground truth is not downloaded or used.
+DRIVE test ground truth was excluded from training and evaluation.
 
 ## CHASE_DB1
 
@@ -25,7 +25,7 @@ DRIVE test ground truth is not downloaded or used.
   auxiliary data.
 
 The raw datasets are stored under `external_data/` and are not needed to run
-inference from the released, packaged weights.
+inference from a locally packaged copy of the upstream weights.
 
 ## Initial checkpoints
 

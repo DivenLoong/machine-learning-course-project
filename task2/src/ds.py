@@ -1,15 +1,7 @@
-"""Data layer for Kaggle 2026task2 (6-class FER2013, 48x48 grayscale).
+"""Load the six-class course dataset and augment grayscale batches on device.
 
-The whole dataset is tiny (35,340 x 2304 uint8 = 81 MB), so it is decoded once and
-kept as uint8 tensors used straight from GPU memory. There is no DataLoader and no
-CPU bottleneck: each batch is augmented on the GPU with grid_sample / interpolate /
-tensor ops, drawing all randomness in one bulk tensor per batch so no per-sample
-device synchronisation happens.
-
-Layout assumed:
-    2026task2/fer_data/fer_data/train/<Class>/*.jpg   28,275 labelled images
-    2026task2/fer_data/fer_data/test/*.jpg             7,065 unlabelled images
-    2026task2/submission.csv                           sample submission (ID,Emotion)
+Images are cached as uint8 arrays. Training augments batches with tensor
+operations after moving the cached images to the GPU.
 """
 from __future__ import annotations
 

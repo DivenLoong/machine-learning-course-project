@@ -1,5 +1,5 @@
-# CPU audit/plotting and the primary four-task pipelines.
-# Install the PyTorch/torchvision wheels matching the local CUDA runtime first for GPU training.
+# Shared dependencies for the four tasks and report plots.
+# For GPU runs, install matching CUDA wheels for PyTorch and torchvision first.
 torch>=2.4
 torchvision>=0.19
 timm>=1.0
@@ -14,7 +14,5 @@ albumentations>=2.0
 segmentation-models-pytorch>=0.4
 PyYAML>=6.0
 matplotlib>=3.8
-seaborn>=0.13
 tqdm>=4.66
 pytest>=8.3
-tensorboard>=2.17

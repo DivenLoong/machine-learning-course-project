@@ -1,22 +1,26 @@
 # 任务一 · 植物幼苗分类
 
-从[课程赛题](https://www.kaggle.com/competitions/2026task1)取得数据。进入 task1 目录，放置 `dataset-for-task2/train/<类别>/*`、`dataset-for-task2/test/*` 与根目录的 `submission-for-task2.csv`。五类训练图各 100 张，提交为 378 行的 ID 与类别。
+[课程数据](https://www.kaggle.com/competitions/2026task1)包含五类共 500 张训练图和 378 张测试图。在 `task1/` 下放置 `dataset-for-task2/train/<类别>/`、`dataset-for-task2/test/` 和任务根目录的样例 `submission-for-task2.csv`。
+
+## 训练与推理
+
+下面以修复裁剪后的 ConvNeXt-Tiny 配置为例。训练按五折保存权重，推理对各折和增强视图的概率取平均。
 
 ```shell
 python eda.py
 python build_cache.py
-python train.py --tag fix_cnx320 --arch convnext_tiny.fb_in22k_ft_in1k --size 320 --head-epochs 4 --ft-epochs 40 --batch-size 32 --raug --mixup 0.2 --cutmix 1.0 --lr 0.0002
-python predict.py --tags fix_cnx320 --tta-flip --out submission_demo.csv
+python train.py --tag demo_cnx320 --arch convnext_tiny.fb_in22k_ft_in1k --size 320 --head-epochs 4 --ft-epochs 40 --batch-size 32 --raug --mixup 0.2 --cutmix 1.0 --lr 0.0002
+python predict.py --tags demo_cnx320 --tta-flip --out submission_demo.csv
 ```
 
-`predict.py` 写出 `outputs/test_probs.npz`。需要验证伪标签阶段时，将该文件路径传入 `train.py --pseudo outputs/test_probs.npz --pseudo-thresh 0.9`，为不同阶段使用独立的运行标记。融合时将多个完整运行标记以逗号分隔传入 `predict.py --tags`。先验可用 `blend.py` 估计，再通过 `apply_prior.py --probs … --prior-json … --out …` 生成提交。
+多配置融合时，把完整的运行标记用逗号连接传给 `--tags`。推理会写入 `outputs/test_probs.npz`。若用于伪标签训练，先留存这份概率，再以新标记训练并传入 `--pseudo` 路径和 `--pseudo-thresh 0.9`。
 
-五折结果与代表性历史配置见 [report/data/plant](../report/data/plant)。最终引用的 v16 在两侧榜单均为 0.9735。v13 与 v16 的本地 CSV 哈希一致。旧报告的四配置记录与文件名可查，精确推理命令和先验文件对应待确认。同源库版本的 0.9947 具有测试图重叠风险，详见证据审计。原任务的独立代码记录见[植物分类仓库](https://github.com/DivenLoong/plant-seedling-classification)。
+## 核对报告中的 v16
 
-若保留原课程运行中的 `outputs/test_probs.npz` 和 `outputs/blend.json`，可复算已发布分数对应的 v16 标签与 CSV 字节。先放置课程样例 CSV，然后在 task1 执行：
+若保留了原课程运行的 `outputs/test_probs.npz` 和 `outputs/blend.json`，可用先验校正脚本和样例 CSV 重算提交：
 
 ```shell
 python apply_prior.py --probs outputs/test_probs.npz --prior-json outputs/blend.json --out submission_v16_check.csv
 ```
 
-用 SHA-256 `8d1d42ed430588da8838f93fefdec165e8e813ad5838db6981c8cabed201dcb2` 校验。多组历史概率和先验组合可产生同一个标签文件，因此字节重现用于核验产物，原 v16 的训练成员与实际调用记录仍按证据审计说明。
+已用 SHA-256 `8d1d42ed430588da8838f93fefdec165e8e813ad5838db6981c8cabed201dcb2` 验证重算的 378 行。v13 与 v16 的本地文件字节相同，v16 的历史成员权重与原始命令仍待确认。同源外部数据版本的 0.9947 涉及测试图重叠风险。参见[五折记录](../report/data/plant)、[证据审计](../report/evidence_audit.md)和[原任务仓库](https://github.com/DivenLoong/plant-seedling-classification)。

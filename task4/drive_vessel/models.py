@@ -618,7 +618,8 @@ def _remap_official_fr_state(state: dict) -> dict:
 
 
 def load_initial_weights(model: nn.Module, path: str | Path) -> dict:
-    """Load the documented training-only FR-UNet checkpoint."""
+    """Load a trusted checkpoint and adapt upstream parameter names to the local model."""
+    # Legacy checkpoints may pickle bunch.Bunch metadata.
     module = types.ModuleType("bunch")
 
     class Bunch(dict):

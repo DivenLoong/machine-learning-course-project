@@ -1,4 +1,4 @@
-"""EfficientNet encoder + lightweight UNet decoder for fovea heatmaps."""
+"""Fovea heatmaps from a timm encoder and a U-Net decoder."""
 
 from __future__ import annotations
 
@@ -30,8 +30,7 @@ class HeatmapNet(nn.Module):
                  padding_mode: str = "zeros", use_reg: bool = False,
                  aux_head: bool = False, in_chans: int = 3):
         super().__init__()
-        # EfficientNet exposes the stem as feature stage 0; ConvNeXt starts
-        # directly with its four downsampled stages.
+        # Select strides 4, 8, 16 and 32. EfficientNet also exposes a stride-2 stem.
         out_indices = (0, 1, 2, 3) if "convnext" in backbone.lower() else (1, 2, 3, 4)
         self.encoder = timm.create_model(
             backbone, pretrained=pretrained, features_only=True, out_indices=out_indices,
@@ -105,7 +104,7 @@ def mask_centroid(hm: torch.Tensor, power: float = 2.0) -> torch.Tensor:
 
 
 def heatmap_to_coord(hm: torch.Tensor, window: int = 17) -> torch.Tensor:
-    """Non-differentiable windowed centroid, returns normalized (u, v)."""
+    """Decode a square heatmap near its peak using normalized pixel-centre coordinates (u, v)."""
     b, _, r, _ = hm.shape
     flat = hm.reshape(b, -1)
     idx = flat.argmax(dim=1)

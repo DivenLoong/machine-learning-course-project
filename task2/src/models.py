@@ -1,13 +1,4 @@
-"""Model factory.
-
-Two families:
-  * timm ImageNet/ImageNet-21k pretrained backbones (default path)
-  * a from-scratch ResEmoteNet (arXiv 2409.10545), the architecture that currently
-    reports the best numbers on FER2013 in the literature for a native 48x48 input
-
-`build_model(name)` returns (model, in_ch, expects_res) so the training script knows
-how to prepare the input.
-"""
+"""ImageNet backbones and a grayscale ResEmoteNet adaptation (arXiv:2409.10545)."""
 from __future__ import annotations
 
 import torch
@@ -17,9 +8,6 @@ import torch.nn.functional as F
 N_CLS = 6
 
 
-# --------------------------------------------------------------------------- #
-# custom FER network (ResEmoteNet)
-# --------------------------------------------------------------------------- #
 class SE(nn.Module):
     def __init__(self, ch: int, r: int = 16):
         super().__init__()
@@ -52,7 +40,7 @@ class ConvBlock(nn.Module):
 
 
 class ResSEBlock(nn.Module):
-    """Two 3x3 convs + squeeze-excitation, identity shortcut with 1x1 projection."""
+    """Residual block with squeeze-and-excitation and a shortcut projection when channels differ."""
 
     def __init__(self, cin: int, cout: int, drop: float = 0.2, se_ratio: int = 16):
         super().__init__()
@@ -108,9 +96,6 @@ class ResEmoteNet(nn.Module):
         return self.fc(self.head_drop(x))
 
 
-# --------------------------------------------------------------------------- #
-# factory
-# --------------------------------------------------------------------------- #
 CUSTOM = {"resemotenet": (ResEmoteNet, 1, 48)}
 
 
@@ -119,7 +104,7 @@ def is_custom(name: str) -> bool:
 
 
 def build_model(name: str, num_classes: int = N_CLS, drop_path: float = 0.1, pretrained: bool = True):
-    """Return (model, in_channels, native_resolution)."""
+    """Return the classifier, its input channel count and the default input size."""
     key = name.split(":")[0]
     if key in CUSTOM:
         cls, in_ch, res = CUSTOM[key]

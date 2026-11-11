@@ -1,13 +1,6 @@
-"""Shared library for the machine-learning assignment "Task 1: plant classification".
+"""Data, models and training for plant seedling classification.
 
-Contents
---------
-* paths / config dataclasses
-* dataset scanning
-* plant-vs-soil cropping (HSV green mask, borrowed from published solutions)
-* datasets with train-time augmentation and multi-view TTA
-* backbone construction with ImageNet weights
-* training / evaluation / inference engine
+The HSV foreground mask follows the approach used in published solutions.
 """
 
 from __future__ import annotations
@@ -64,11 +57,7 @@ def ensure_dir(path: str) -> str:
 
 
 def load_rgb(path: str) -> Image.Image:
-    """Open an image as RGB, compositing any alpha channel onto the soil colour.
-
-    Nine of the supplied PNGs are RGBA with transparent borders; converting those
-    straight to RGB turns the border pure black and wrecks them.
-    """
+    """Composite transparent borders onto the soil colour before converting to RGB."""
     with Image.open(path) as im:
         if im.mode in ("RGBA", "LA") or (im.mode == "P" and "transparency" in im.info):
             rgba = im.convert("RGBA")
@@ -226,11 +215,8 @@ def apply_crop(img: Image.Image, box: Optional[Tuple[int, int, int, int]],
                ) -> Image.Image:
     """Crop to ``box``, optionally pad to a square so leaf shape is preserved.
 
-    Order matters and used to be wrong: the crop box is expressed in the coordinates of
-    the *original* image, so cropping must happen before any downscaling.  Downscaling
-    first made PIL fill everything outside the resized canvas with black, which silently
-    corrupted 97 of the 500 training images (every plant whose bounding box covered most
-    of the frame, i.e. exactly the confusable grass species).
+    The box uses original-image coordinates. Crop before resizing so Pillow
+    does not pad out-of-bounds regions with black.
     """
     if box is not None:
         img = img.crop(box)
@@ -526,7 +512,7 @@ def get_head_params(model: nn.Module) -> List[nn.Parameter]:
 
 def _build_timm_model(name: str, num_classes: int, pretrained: bool = True,
                       img_size: Optional[int] = None) -> nn.Module:
-    """Fall back to timm for architectures torchvision does not ship (e.g. in21k weights)."""
+    """Build a timm backbone with the requested classifier and input size."""
     import timm  # imported lazily: only needed for timm backbones
 
     if img_size:
@@ -598,8 +584,7 @@ def logits_for(model: nn.Module, loader: DataLoader, device: torch.device,
                tta: bool = False, chunk: int = 64) -> Tuple[np.ndarray, np.ndarray]:
     """Return (mean probabilities over TTA views, sample indices) in dataset order.
 
-    ``chunk`` bounds how many views are pushed through the network at once, so TTA on a
-    batch of images does not blow up the 8 GB of VRAM.
+    ``chunk`` limits the number of views per forward pass to bound GPU memory use.
     """
     model.eval()
     all_logits: Dict[int, List[np.ndarray]] = {}
@@ -709,9 +694,7 @@ def train_one_fold(tr_loader: DataLoader, va_loader: DataLoader, cfg: TrainConfi
             best_acc, best_epoch = va, epoch + cfg.head_epochs
             best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
 
-    # The final weights are kept (not the best-val checkpoint) so that the out-of-fold
-    # estimate stays honest: picking the epoch by validation accuracy would leak the
-    # validation set into model selection.
+    # Use the last scheduled epoch so held-out fold labels do not select the checkpoint.
     if ema is not None:
         ema.copy_to(model)
         history["ema_val_acc"] = evaluate(model, va_loader, device)

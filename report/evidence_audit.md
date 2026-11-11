@@ -19,7 +19,7 @@
 | 最终提交 | v16（56983147）Public/Private 0.9735；v13 与 v16 本地文件字节一致 | [Kaggle 记录](data/kaggle_scores.csv)、原 CSV | 已核；各阶段历史权重配比及先验文件精确映射待确认 |
 | 外部同源数据 | v10（56867229）Public/Private 0.9947。原进度记录写明 41/378 逐像素匹配的风险 | [Kaggle 记录](data/kaggle_scores.csv)、原 `PROGRESS.md` 的公开同源数据段落 | 分数已核；重复计数标作历史审计记录 |
 
-原实验主要证据包括任务一 `outputs/fix_*/summary.json`、逐折 `fold*_history.json`、`outputs/test_probs_*.npz`、`build_paper.py` 的对照表与本地 Kaggle CSV。图中逐类 F1 使用早期 OOF 汇总，版本在正文已注明。 在干净导出目录运行 `apply_prior.py`，输入原 `outputs/test_probs.npz`、`outputs/blend.json` 和课程样例 CSV，重现 378 行 v16 的完整字节。不同的概率、先验组合也能得到相同标签，故精确历史成员与调用仍待确认。
+原实验主要证据包括任务一 `outputs/fix_*/summary.json`、逐折 `fold*_history.json`、`outputs/test_probs_*.npz`、`build_paper.py` 的对照表与本地 Kaggle CSV。原任务报告记录，修复前缓存的 500 张训练图中有 97 张的黑色像素超过一半。图中逐类 F1 使用早期 OOF 汇总，版本在正文已注明。 在干净导出目录运行 `apply_prior.py`，输入原 `outputs/test_probs.npz`、`outputs/blend.json` 和课程样例 CSV，重现 378 行 v16 的完整字节。不同的概率、先验组合也能得到相同标签，故精确历史成员与调用仍待确认。
 
 ## 任务二 · 面部表情分类
 

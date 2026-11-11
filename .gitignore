@@ -44,3 +44,9 @@ report/*.toc
 report/*.out
 report/*.bbl
 report/*.blg
+report/*.fdb_latexmk
+report/*.fls
+report/*.synctex.gz
+report/*.xdv
+report/main.pdf
+report/chapters/*.aux

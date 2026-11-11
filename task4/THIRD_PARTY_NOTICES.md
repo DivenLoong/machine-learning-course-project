@@ -39,7 +39,7 @@ DRIVE checkpoint is used with the source paper's suggested threshold.
 ## Additional screened implementations
 
 - PAF / ISBI 2022 (MIT): `Limingxing00/Retinal-Vessel-Segmentation-ISBI2022`.
-  Its published DRIVE prediction maps were tested at the user's request
+  Its published DRIVE prediction maps were evaluated
   (public 0.75742) and were not used for the final submission.
 - WA-Net (MIT):
   `dora-alvarado/wanet-retinal-vessel-segmentation`. The official DRIVE
@@ -48,10 +48,10 @@ DRIVE checkpoint is used with the source paper's suggested threshold.
   `DIAGNijmegen/drive-vessels-unet`. The official checkpoint was screened but
   not selected.
 - IterNet (MIT): `conscienceli/IterNet`. Its released universal checkpoint was
-  tested at the user's request (public 0.72047) and excluded from the final
+  evaluated (public 0.72047) and excluded from the final
   submission because the repository says all images were used for training.
-- SA-UNet: `clguo/SA-UNet`. The official DRIVE Keras checkpoint was tested at
-  the user's request (public 0.78976). The repository has no license file, so
+- SA-UNet: `clguo/SA-UNet`. The official DRIVE Keras checkpoint was evaluated
+  (public 0.78976). The repository has no license file, so
   it is not part of the final submission.
 - URVSM (`JRC-VPLab/URVSM`) and FSG-Net (`ZombaSY/FSG-Net-pytorch`) have
   unresolved or absent license metadata and are excluded from the final
@@ -60,5 +60,4 @@ DRIVE checkpoint is used with the source paper's suggested threshold.
 ## Native CLAHE + Frangi U-Net recipe
 
 The native-resolution patch-training recipe and architecture were adapted from
-`LSaiko/Reti-ves-seg` under the MIT License. The competition performance was
-negative and its weights are not part of the selected final submission.
+`LSaiko/Reti-ves-seg` under the [MIT License](vendor/reti_ves_seg/LICENSE). The frozen submission uses the upstream FR-UNet weights.
