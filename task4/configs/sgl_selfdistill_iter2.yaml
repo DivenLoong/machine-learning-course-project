@@ -1,0 +1,17 @@
+extends: sgl_drive.yaml
+data:
+  train_patch_size: 192
+  pseudo:
+    enabled: true
+    root: "pseudo_data/iter2_soft"
+    repeat: 3
+model:
+  init_checkpoint: "runs/sgl_pseudotrain_soft_f0/best.pt"
+train:
+  batch_size: 8
+  predict_batch_size: 2
+  patches_per_image: 4
+  epochs: 3
+  early_stopping_patience: 2
+  lr: 0.000005
+  ema_decay: 0.0

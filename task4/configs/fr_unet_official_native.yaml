@@ -1,0 +1,4 @@
+extends: fr_unet_official_patch_drive.yaml
+data:
+  inference_mode: native_pad
+  native_pad_size: 592

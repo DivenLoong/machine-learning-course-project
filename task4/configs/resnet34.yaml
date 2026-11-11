@@ -1,0 +1,6 @@
+extends: base.yaml
+model:
+  name: resnet34
+  pretrained: true
+train:
+  lr: 0.0003

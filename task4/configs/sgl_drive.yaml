@@ -1,0 +1,16 @@
+extends: base.yaml
+data:
+  preprocessing: raw
+  input_channels: 3
+  normalization: raw
+model:
+  name: sgl
+  pretrained: false
+  init_checkpoint: "weights/sgl_drive_k8.pth"
+eval:
+  threshold: 0.4
+  threshold_low: 0.3
+  dti: false
+  dti_search: false
+  min_area: 0
+  fov_mask: true

@@ -1,0 +1,6 @@
+extends: fr_unet_pseudotrain_soft.yaml
+data:
+  train_all: true
+train:
+  epochs: 1
+  early_stopping_patience: 1

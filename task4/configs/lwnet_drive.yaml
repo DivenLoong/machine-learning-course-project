@@ -1,0 +1,16 @@
+extends: base.yaml
+data:
+  preprocessing: raw
+  input_channels: 3
+  normalization: unit
+model:
+  name: lwnet
+  pretrained: false
+  init_checkpoint: "weights/wnet_drive_checkpoint.pth"
+eval:
+  threshold: 0.42
+  threshold_low: 0.30
+  dti: false
+  dti_search: false
+  min_area: 0
+  fov_mask: true

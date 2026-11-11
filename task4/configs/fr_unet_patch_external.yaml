@@ -1,0 +1,15 @@
+extends: fr_unet.yaml
+data:
+  train_patch_size: 64
+  preprocessing: green_clahe
+  external:
+    enabled: true
+    chase_root: "external_data/CHASE_DB1"
+    stare_root: "external_data/STARE"
+    local_repeat: 3
+train:
+  batch_size: 48
+  patches_per_image: 48
+  epochs: 60
+  early_stopping_patience: 20
+  lr: 0.0005

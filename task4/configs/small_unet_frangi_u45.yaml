@@ -1,0 +1,3 @@
+extends: small_unet_frangi.yaml
+data:
+  folds_file: "runs/folds_u45.json"

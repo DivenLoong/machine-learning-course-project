@@ -1,0 +1,86 @@
+{
+  "args": {
+    "arch": "efficientnet_b0",
+    "size": 288,
+    "folds": 5,
+    "max_folds": 0,
+    "head_epochs": 4,
+    "ft_epochs": 46,
+    "batch_size": 32,
+    "lr": 0.0002,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.05,
+    "mixup": 0.0,
+    "cutmix": 0.0,
+    "ema": 0.0,
+    "raug": false,
+    "raug_ops": 2,
+    "raug_mag": 9,
+    "no_crop": false,
+    "mask_bg": false,
+    "tag": "fix_b0_288",
+    "seed": 42,
+    "subset": "",
+    "resume": false,
+    "pseudo": "",
+    "pseudo_thresh": 0.9
+  },
+  "mean": [
+    0.33072200095317844,
+    0.28430774952342425,
+    0.21737058398012554
+  ],
+  "std": [
+    0.11301824277362972,
+    0.11553715136559409,
+    0.12449775743469425
+  ],
+  "classes": [
+    "Black-grass",
+    "Common wheat",
+    "Loose Silky-bent",
+    "Scentless Mayweed",
+    "Sugar beet"
+  ],
+  "n_folds": 5,
+  "n_pseudo": 0,
+  "fold_metrics": [
+    {
+      "fold": 0,
+      "accuracy": 0.92,
+      "macro_f1": 0.9215311004784688,
+      "best_val_acc": 0.93,
+      "minutes": 2.311775477727254
+    },
+    {
+      "fold": 1,
+      "accuracy": 0.92,
+      "macro_f1": 0.9186239348582245,
+      "best_val_acc": 0.94,
+      "minutes": 2.204004422823588
+    },
+    {
+      "fold": 2,
+      "accuracy": 0.94,
+      "macro_f1": 0.9398496240601503,
+      "best_val_acc": 0.96,
+      "minutes": 2.223049970467885
+    },
+    {
+      "fold": 3,
+      "accuracy": 0.9,
+      "macro_f1": 0.9015509788965167,
+      "best_val_acc": 0.92,
+      "minutes": 2.238212831815084
+    },
+    {
+      "fold": 4,
+      "accuracy": 0.93,
+      "macro_f1": 0.9258297258297258,
+      "best_val_acc": 0.94,
+      "minutes": 2.2606251358985903
+    }
+  ],
+  "oof_accuracy": 0.922,
+  "oof_macro_f1": 0.9222293349723426
+}

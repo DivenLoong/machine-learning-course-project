@@ -1,0 +1,5 @@
+extends: resnet34_external.yaml
+train:
+  augment: false
+  epochs: 140
+  early_stopping_patience: 35

@@ -1,0 +1,85 @@
+\chapter{复现与证据索引}
+\label{app:repro}
+
+\section{代码仓库与可重现产物}
+综合代码仓库为 \RepositoryLink。仓库根目录的 README 提供依赖安装、
+工作目录、课程数据目录和入口命令。LaTeX 主文件位于 \code{report/main.tex}，
+图表脚本位于 \code{report/scripts/make_figures.py}。本地正式版以
+\code{cover.local.tex} 提供完整封面字段。公开检出可以使用同一主文件
+编译去除个人资料的版本。
+
+\begin{table}[H]
+\centering\small
+\caption{复查各任务的代码与结果入口}
+\begin{tabularx}{\linewidth}{@{}P{21mm}YY@{}}
+\toprule
+任务 & 主要代码 & 可核查的记录 \\
+\midrule
+幼苗 & \code{task1/plantcls.py}，\code{train.py}，\code{predict.py}
+ & \code{report/data/plant/} 中配置、折外汇总与逐轮日志 \\
+表情 & \code{task2/src/ds.py}，\code{train.py}，\code{blend_search.py}
+ & \code{report/data/fer/} 中代表性日志、融合权重和消融 \\
+定位 & \code{task3/solution/src/model.py}，\code{infer.py}，\code{vascx_fovea.py}
+ & \code{report/data/fovea/} 中运行配置和逐折记录 \\
+分割 & \code{task4/drive_vessel/}，\code{inference.py}，\code{BEST_CONFIG}
+ & 实验日志、原生训练日志及冻结提交哈希 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+已归档的 \code{report/data/kaggle_scores.csv} 保存各赛题完成状态的
+提交名称、编号、时间和两侧分数。哈希列对能与本地具名文件匹配的产物
+保存 SHA-256，供教师核对本地提交文件。历史上名称重复的
+\code{submission.csv} 仅凭同名不能确认文件内容。主表对关键分数保留
+提交编号，在 \code{report/evidence_audit.md} 记录证据路径和计算口径。
+
+\section{复现顺序}
+\begin{enumerate}
+\item 使用课程 Kaggle 页面或教师发放的文件获取四项数据。保持训练标签、测试
+图像和提交样例的目录结构。使用项目 README 指定的工作目录和相对数据路径。
+\item 首先用发布的脚本检查输入与提交格式。再按需要运行代表性训练、推理和
+融合。历史权重由本地材料或经许可的上游渠道获取。
+\item 对任意已归档提交用哈希校验其字节，对 CSV 检查字段与样例顺序。
+分割提交增加 RLE 解码，中心凹提交核查坐标轴、单位与图像边界。
+\item 在仓库根目录生成图表，在报告目录编译主文件。构建自动运行 BibTeX。
+\begin{quote}\small
+\texttt{python report/scripts/make\_figures.py}\\
+\texttt{cd report}\\
+\texttt{latexmk -xelatex -outdir=build main.tex}
+\end{quote}
+\end{enumerate}
+
+\section{复查时容易混淆的口径}
+\begin{itemize}
+\item 本地分类报告中的 OOF 表示单张训练图由其对应的验证折模型预测。
+测试时每张图可由所有折共同预测，两者的投票成员数不同。
+\item 中心凹 RMSE 汇总按样本数量加权平方误差。直接平均各折 RMSE
+会改变聚合方式。距离分档的样本内得分与嵌套验证结果各自记录。
+\item DRIVE 官方权重的 epoch 40 表示上游 checkpoint。原生 U-Net
+运行的实际轮次也为 40，其验证最佳在第 15 轮，两条记录来自不同模型。
+\item 参考论文建立方法来源。课程数据量、折划分、训练轮次、后处理和
+分数均由项目或平台记录核查。
+\end{itemize}
+
+\subsection{环境与外部资源}
+交付核查在 Windows 的 Python 3.13 环境执行，PyTorch 为
+2.14.0+cu126，torchvision 为 0.29.1+cu126，timm 为 1.0.30，
+OpenCV 为 5.0.0，albumentations 为 2.0.8。该环境用于检查
+发布入口、提交格式和已存档的分割概率。原任务三训练记录报告的 GPU
+为 RTX 4070 Laptop、显存 8 GB，且保存了 PyTorch、timm、
+OpenCV 与增强库版本。其他运行的硬件与依赖仅在各自记录可证实时列出。
+
+\begin{table}[H]
+\centering\small
+\caption{复现中需要另行准备的输入}
+\begin{tabularx}{\linewidth}{@{}P{23mm}YP{44mm}@{}}
+\toprule
+任务 & 本地数据入口 & 其他依赖 \\
+\midrule
+幼苗 & \code{task1/dataset-for-task2/} & timm 预训练骨干 \\
+表情 & \code{task2/2026task2/} 或 \code{FER_PROJECT_ROOT} & timm 骨干；验证和测试概率缓存 \\
+定位 & \code{task3/2026task3/detection/} 或 \code{FOVEA_DATA_DIR} & 血管模型、VascX 与其预处理组件 \\
+分割 & \code{task4/2026task-4/segmentation/} & 上游 FR-UNet checkpoint \\
+\bottomrule
+\end{tabularx}
+\end{table}

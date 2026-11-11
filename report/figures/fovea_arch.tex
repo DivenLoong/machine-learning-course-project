@@ -1,0 +1,15 @@
+\begin{tikzpicture}[node distance=7mm and 6mm]
+\node[box] (input) {眼底 RGB 与血管图\\中心裁方、$4\times512^2$};
+\node[box,right=of input] (enc) {EfficientNet-B1\\步幅 4、8、16、32};
+\node[box,right=of enc] (dec) {三段上采样和跳接\\$1\times128\times128$ 热图};
+\node[box,below=of dec] (coord) {局部加权质心\\复原原图坐标};
+\node[box,left=of coord] (agg) {镜像与多折融合\\两个随机种子};
+\node[outputbox,left=of agg] (fuse) {按预测距离分档融合\\输出 $(\hat x,\hat y)$};
+\node[side,below=of agg] (prior) {VascX 定位分支\\独立输出坐标};
+\draw[flow] (input)--(enc);
+\draw[flow] (enc)--(dec);
+\draw[flow] (dec)--(coord);
+\draw[flow] (coord)--(agg);
+\draw[flow] (agg)--(fuse);
+\draw[feedback] (prior.west)-|(fuse.south);
+\end{tikzpicture}

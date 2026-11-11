@@ -1,0 +1,16 @@
+\begin{tikzpicture}[node distance=7mm and 6mm]
+\node[box] (im) {灰度面部图像\\$1\times48\times48$};
+\node[box,right=of im] (gpu) {GPU 批解码后张量\\增强、缩放、归一化};
+\node[box,right=of gpu] (net) {ConvNeXt 等骨干\\或 ResEmoteNet};
+\node[box,below=of net] (head) {全局池化与分类头\\六类 logits};
+\node[box,left=of head] (ens) {多折、尺度与镜像\\概率平均};
+\node[outputbox,left=of ens] (y) {跨骨干融合\\六类表情预测};
+\node[side,below=of ens] (oof) {折外概率\\选择融合权重};
+\draw[flow] (im)--(gpu);
+\draw[flow] (gpu)--(net);
+\draw[flow] (net)--(head);
+\draw[flow] (head)--(ens);
+\draw[flow] (ens)--(y);
+\draw[feedback] (head.south)|-(oof.east);
+\draw[feedback] (oof.west)-|(y.south);
+\end{tikzpicture}

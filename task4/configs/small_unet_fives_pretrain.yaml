@@ -1,0 +1,15 @@
+extends: small_unet_official.yaml
+data:
+  external:
+    enabled: true
+    fives_root: "external_data/fives"
+    external_only: true
+    local_repeat: 1
+  train_patch_size: 256
+train:
+  epochs: 24
+  batch_size: 8
+  patches_per_image: 1
+  workers: 4
+  lr: 0.001
+  early_stopping_patience: 8

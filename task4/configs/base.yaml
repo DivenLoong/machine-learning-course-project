@@ -1,0 +1,48 @@
+seed: 20261103
+device: cuda
+
+data:
+  root: "2026task-4/segmentation"
+  size: 512
+  num_folds: 5
+  folds_file: "runs/folds.json"
+  preprocessing: raw
+  input_channels: 3
+  normalization: imagenet
+  train_patch_size: null
+  external:
+    enabled: false
+    chase_root: "external_data/CHASE_DB1"
+    stare_root: "external_data/STARE"
+    local_repeat: 3
+
+model:
+  name: resnet34
+  pretrained: true
+
+loss:
+  name: bce_dice
+
+train:
+  epochs: 120
+  batch_size: 2
+  predict_batch_size: 2
+  workers: 2
+  lr: 0.0003
+  weight_decay: 0.0005
+  min_lr_ratio: 0.01
+  gradient_accumulation: 1
+  amp_dtype: bf16
+  ema_decay: 0.99
+  early_stopping_patience: 35
+  augment: true
+  patches_per_image: 1
+  deterministic: false
+
+eval:
+  threshold: 0.5
+  min_area: 0
+  fov_mask: true
+
+output:
+  root: "runs"

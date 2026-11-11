@@ -1,0 +1,4 @@
+extends: lwnet_drive.yaml
+data:
+  inference_mode: fov_crop
+  crop_size: 512

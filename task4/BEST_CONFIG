@@ -1,0 +1,30 @@
+# Best leaderboard-verified, rules-compliant configuration (2026-11-04)
+model:
+  name: fr_unet
+  in_channels: 1
+  feature_scale: 2
+  checkpoint: weights/fr_unet_drive_epoch40_packaged.pt
+  checkpoint_license: MIT (lseventeen/FR-UNet)
+
+data:
+  root: 2026task-4/segmentation
+  preprocessing: raw
+  input_channels: 1
+  normalization: unit
+  inference_mode: resize
+  size: 512
+
+inference:
+  tta: false
+  threshold: 0.65
+  threshold_low: 0.40
+  double_threshold_iteration: true
+  min_area: 16
+  fov_mask: true
+
+validation:
+  public_leaderboard_dice: 0.81766
+  local_all_training_images_dice: 0.78712
+  local_metric_scope: all 512x512 pixels including zero-valued background outside FOV
+  public_submission: snapshots/best_public_0.81766_fr_official/submission_fr_official.csv
+  state: frozen rollback candidate

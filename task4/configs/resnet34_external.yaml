@@ -1,0 +1,10 @@
+extends: resnet34.yaml
+data:
+  external:
+    enabled: true
+    chase_root: "external_data/CHASE_DB1"
+    stare_root: "external_data/STARE"
+    local_repeat: 3
+train:
+  epochs: 180
+  early_stopping_patience: 45

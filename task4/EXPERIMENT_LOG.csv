@@ -1,0 +1,35 @@
+experiment_id,model,data,loss,augmentation,inference,validation_dice,public_dice,status,notes
+E001,ResNet34-UNet,competition train 16/4 raw RGB,BCE+Dice,yes,threshold search,0.7325,,screened,fold 0
+E002,ResNet34-UNet,competition train 16/4 raw RGB,BCE+Dice,yes,threshold search,0.7569,,screened,fold 1
+E003,ResNet34+CHASE/STARE,competition train 16/4 augmented auxiliary data,BCE+Dice,yes,threshold search,0.7549,,screened,fold 0
+E004,ConvNeXt-Tiny-UNet,competition train 16/4 raw RGB,BCE+Dice,yes,threshold search,0.7086,,rejected,fold 0
+E005,LadderNet,competition train 16/4 green CLAHE,BCE+Dice,yes,threshold search,0.7033,,rejected,fold 0
+E006,FR-UNet official epoch40,competition labels all 20,checkpoint,none,threshold 0.65 DTI 0.5 min-area 16,0.7928,,selected precursor,all-20 is not independent
+E007,FR-UNet official epoch40,competition labels all 20,checkpoint,none,8-way TTA DTI,0.7933,,rejected,public TTA behavior was worse
+E008,SGL DRIVE k8,competition labels all 20,checkpoint,none,8-way TTA,0.8117,,rejected,public score regressed sharply
+E009,FR official public submission,competition labels all 20,checkpoint,none,512 resize DTI high 0.65 low 0.40 min-area 16,0.78712,0.81766,best verified,snapshot created
+E010,FR official high-threshold ablation,competition labels all 20,checkpoint,none,512 resize DTI high 0.80 low 0.40 min-area 16,,0.81618,rejected,lower than 0.65
+E011,FR official native-pad TTA,competition labels all 20,checkpoint,none,592 native-pad 8-way TTA DTI,,0.79524,rejected,lower than 512-resize no-TTA
+E012,FR official native-pad no TTA,competition labels all 20,checkpoint,none,592 native-pad DTI 0.60/0.45,,0.77672,rejected,geometry mismatch
+E013,Little W-Net DRIVE,competition labels all 20,checkpoint,none,FOV crop threshold 0.42,0.7871,0.77172,rejected,independent source but public weak
+E014,FR soft-label student,competition train plus unlabelled-test pseudo labels,BCE+Dice,yes,holdout fold 0,0.81069,,rejected,student did not exceed teacher locally
+E015,FR + FSG + SGL fusion,competition train plus unlabelled-test pseudo labels,BCE+Dice,yes,weighted probabilities threshold 0.45,,0.78070,rejected,public leaderboard disproved offline estimate
+E016,WA-Net official DRIVE,competition labels all 20,checkpoint,none,overlapping patches threshold 0.40,0.78094,,research candidate,public submission blocked by daily limit
+E017,DIAG MONAI U-Net,competition labels all 20,checkpoint,none,threshold 0.45,0.74878,,rejected,Apache-2.0 checkpoint reproduced
+E018,TransUNet-v2 Kaggle,competition labels all 20,checkpoint,none,256 resize,0.24707,,rejected,released normalization/output semantics could not be reproduced reliably
+E019,FR clean fine-tune,competition train 16/4 whole-image normalized patches,BCE+Dice,yes,fold 0,0.79157,,rejected,normalization-order bug fixed but no gain
+E020,FR pixel refiner,competition train leave-one-image-out,gradient boosted pixels,no,threshold 0.70,0.79080,,rejected,no gain over FR baseline
+E021,FR DTI low-threshold 0.50,competition labels all 20,checkpoint,none,512 resize DTI high 0.65 low 0.50 min-area 16,0.79280,,pending quota,not independent; queued for public check
+E022,FR DTI low-threshold 0.60,competition labels all 20,checkpoint,none,512 resize DTI high 0.65 low 0.60 min-area 16,,,pending quota,stricter DTI expansion
+E023,FR flip-only TTA,competition labels all 20,checkpoint,none,four flip views high 0.55 low 0.40 min-area 8,0.79313,,pending quota,local improvement is small
+E024,IterNet universal checkpoint,competition test inference only,checkpoint,none,384 full-image final output threshold 0.50,,0.72047,rejected,universal checkpoint claims all-data training; noncompliant risk
+E025,PAF ISBI2022 official predictions,competition test inference only,checkpoint,none,published DRIVE output threshold 0.50,,0.75742,rejected,test-selected public checkpoint/output risk
+E026,SA-UNet official DRIVE,competition labels all 20,checkpoint,none,592 center-pad threshold 0.40,0.80052,0.78976,rejected,official Keras graph reproduced
+E027,FR + SA-UNet,competition test inference only,checkpoint,none,probability weights 0.6/0.4 threshold 0.50,,0.77767,rejected,local gain did not transfer
+E028,FR DTI low threshold 0.50,competition labels all 20,checkpoint,none,512 resize DTI high 0.65 low 0.50 min-area 16,0.79280,0.78997,rejected,local gain did not transfer
+E029,Small U-Net,competition train 16/4 512 resize,BCE+Dice,mild affine+flip,256 patches threshold 0.50,0.75913,,rejected,fixed fold 0; below pretrained baseline
+E030,Small U-Net CLAHE+Frangi,native 584x565 padded to 608,BCE+Dice,flip,FOV-centered 64 patches 8000/epoch threshold 0.50,0.80780,0.75079,rejected,native FOV metric and competition metric diverge sharply
+E031,Small U-Net CLAHE+Frangi calibrated,native 584x565 padded to 608,BCE+Dice,flip,FOV-centered 64 patches threshold 0.35,,0.78848,rejected,threshold tuned to bilinear-resized label convention
+E032,FR 0.75 + native Frangi U-Net 0.25,checkpoint + trained model,none,none,DTI 0.65/0.40 min-area 16 FOV,,0.80897,rejected,local fusion gain did not transfer
+E033,FSG-Net DRIVE checkpoint,checkpoint inference,none,none,8-view TTA threshold 0.45 FOV mask,,0.77706,rejected,published DRIVE score did not transfer
+E034,FR-UNet threshold ablation,all 20,checkpoint,none,no DTI threshold 0.55 FOV mask,0.79260,0.77485,rejected,lower confidence expansion was essential

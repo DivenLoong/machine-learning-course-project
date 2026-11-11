@@ -1,0 +1,10 @@
+extends: base.yaml
+model:
+  name: convnext_tiny
+  pretrained: true
+  timm_name: convnext_tiny.fb_in22k_ft_in1k
+train:
+  lr: 0.0001
+  batch_size: 1
+  gradient_accumulation: 2
+  epochs: 100

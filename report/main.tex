@@ -1,0 +1,100 @@
+\documentclass[UTF8,a4paper,12pt,fontset=fandol,openany,zihao=-4]{ctexrep}
+\usepackage[top=24mm,bottom=24mm,left=25mm,right=25mm,headheight=16pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx,booktabs,tabularx,array}
+\usepackage{enumitem,xcolor,tikz,fancyhdr,caption,float}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\definecolor{ink}{HTML}{19324D}
+\definecolor{bodyink}{HTML}{273440}
+\definecolor{blue}{HTML}{346A98}
+\definecolor{teal}{HTML}{21867A}
+\definecolor{amber}{HTML}{A95C15}
+\definecolor{mist}{HTML}{EEF2F5}
+\hypersetup{unicode,colorlinks,linkcolor=ink,citecolor=teal,urlcolor=blue,
+  pdftitle={机器学习课程设计综合实验报告},pdfsubject={四项视觉任务的实验设计与结果分析}}
+\urlstyle{same}
+\ctexset{chapter={name={第,章},number=\chinese{chapter},format={\raggedright\heiti\LARGE\color{ink}},
+  beforeskip=3mm,afterskip=8mm,aftername=\enspace},
+  section={format={\raggedright\heiti\Large\color{ink}},beforeskip=1.5ex plus .3ex,afterskip=.8ex},
+  subsection={format={\raggedright\heiti\normalsize\color{ink}},beforeskip=1ex,afterskip=.45ex}}
+\captionsetup{font=small,labelfont=bf,labelsep=quad,skip=6pt}
+\setlength{\parindent}{2em}
+\setlength{\intextsep}{9pt plus 3pt minus 2pt}
+\raggedbottom
+\setlength{\parskip}{.30em plus .15em minus .1em}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.23}
+\linespread{1.17}
+\setlist{topsep=.35em,itemsep=.2em,leftmargin=2.6em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{blue}机器学习课程设计}
+\fancyhead[R]{\small\color{blue}\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\color{ink}\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{ink}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\setcounter{tocdepth}{1}
+\graphicspath{{figures/}}
+\newcommand{\RepositoryURL}{https://github.com/DivenLoong/machine-learning-course-project}
+\newcommand{\RepositoryLink}{\href{\RepositoryURL}{\nolinkurl{github.com/DivenLoong/machine-learning-course-project}}}
+\newcommand{\CourseSchool}{东北大学}
+\newcommand{\CourseCollege}{计算机科学与工程学院}
+\newcommand{\CourseClass}{}
+\newcommand{\CourseStudent}{}
+\newcommand{\CourseID}{}
+\newcommand{\CourseDate}{\today}
+\newif\ifLocalReport
+\IfFileExists{cover.local.tex}{\LocalReporttrue\input{cover.local.tex}}{\LocalReportfalse}
+\ifLocalReport\hypersetup{pdfauthor={\CourseStudent}}\fi
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\chart}[4]{%
+  \begin{figure}[H]\centering
+  \includegraphics[width=.98\linewidth]{#1}
+  \caption{#2}\label{#3}
+  \vspace{2pt}\parbox{.94\linewidth}{\small\raggedright #4}
+  \end{figure}}
+\newcommand{\privatechart}[4]{%
+  \ifLocalReport
+    \IfFileExists{private/#1}{\chart{private/#1}{#2}{#3}{#4}}{}%
+  \fi}
+\newcommand{\archdiagram}[3]{%
+  \begin{figure}[H]\centering
+  \input{figures/#1}
+  \caption{#2}\label{#3}
+  \end{figure}}
+\tikzset{flow/.style={-{Latex[length=2.3mm]},draw=blue,line width=.75pt},
+  feedback/.style={flow,dashed,draw=teal},box/.style={draw=blue,fill=mist,rounded corners=2pt,
+  align=center,text width=3.26cm,minimum height=12mm,inner sep=3pt,font=\small},
+  outputbox/.style={box,draw=teal,fill=teal!8}, side/.style={box,draw=amber,fill=amber!8}}
+\begin{document}
+\color{bodyink}
+\hypersetup{pageanchor=false}
+\input{chapters/cover}
+\hypersetup{pageanchor=true}
+\clearpage
+\pagenumbering{Roman}
+\input{chapters/abstract}
+\clearpage
+{\small\linespread{1.02}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\include{chapters/task1}
+\include{chapters/task2}
+\include{chapters/task3}
+\include{chapters/task4}
+\include{chapters/conclusion}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{参考文献}
+\renewcommand{\bibfont}{\small}
+\setlength{\bibsep}{.25em}
+\bibliographystyle{gbt7714-numerical}
+\bibliography{references}
+\appendix
+\include{chapters/reproduction}
+\include{chapters/records}
+\end{document}

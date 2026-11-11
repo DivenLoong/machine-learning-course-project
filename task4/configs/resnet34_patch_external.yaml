@@ -1,0 +1,9 @@
+extends: resnet34_external.yaml
+data:
+  train_patch_size: 256
+train:
+  batch_size: 4
+  patches_per_image: 6
+  epochs: 100
+  early_stopping_patience: 30
+  lr: 0.0004

@@ -1,0 +1,57 @@
+{
+  "aug_base": {
+    "acc": 0.7144120335578918,
+    "epoch": 13,
+    "which": "ema",
+    "final_val_acc": 0.7144120335578918,
+    "minutes": 13.93,
+    "params_m": 27.825,
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "res": 112,
+    "fold": 0
+  },
+  "aug_geo": {
+    "acc": 0.709637463092804,
+    "epoch": 13,
+    "which": "ema",
+    "final_val_acc": 0.709637463092804,
+    "minutes": 13.88,
+    "params_m": 27.825,
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "res": 112,
+    "fold": 0
+  },
+  "aug_geo_dp": {
+    "acc": 0.709637463092804,
+    "epoch": 23,
+    "which": "ema",
+    "final_val_acc": 0.709637463092804,
+    "minutes": 13.91,
+    "params_m": 27.825,
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "res": 112,
+    "fold": 0
+  },
+  "aug_geo_lrh": {
+    "acc": 0.7119362950325012,
+    "epoch": 21,
+    "which": "ema",
+    "final_val_acc": 0.711936354637146,
+    "minutes": 13.89,
+    "params_m": 27.825,
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "res": 112,
+    "fold": 0
+  },
+  "aug_geo_all": {
+    "acc": 0.7114058136940002,
+    "epoch": 22,
+    "which": "raw",
+    "final_val_acc": 0.7114058136940002,
+    "minutes": 13.9,
+    "params_m": 27.825,
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "res": 112,
+    "fold": 0
+  }
+}

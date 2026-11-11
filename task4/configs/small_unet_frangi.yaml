@@ -1,0 +1,30 @@
+extends: base.yaml
+data:
+  preprocessing: clahe_frangi
+  input_channels: 2
+  normalization: unit
+  train_patch_size: 64
+  external:
+    enabled: false
+model:
+  name: small_unet
+  in_channels: 2
+  base_channels: 64
+  dropout: 0.0
+train:
+  epochs: 120
+  batch_size: 16
+  predict_batch_size: 1
+  patches_per_image: 500
+  workers: 4
+  lr: 0.001
+  weight_decay: 0.0000
+  min_lr_ratio: 0.01
+  early_stopping_patience: 30
+  ema_decay: 0.0
+  augment_profile: mild
+  fov_center_crop: true
+eval:
+  threshold: 0.5
+  min_area: 0
+  fov_mask: true

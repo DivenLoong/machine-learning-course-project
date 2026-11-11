@@ -1,0 +1,28 @@
+extends: base.yaml
+data:
+  preprocessing: raw
+  input_channels: 1
+  normalization: unit
+  train_patch_size: 256
+  external:
+    enabled: false
+model:
+  name: small_unet
+  base_channels: 32
+  dropout: 0.05
+train:
+  epochs: 80
+  batch_size: 8
+  predict_batch_size: 1
+  patches_per_image: 8
+  workers: 2
+  augment_profile: mild
+  lr: 0.001
+  weight_decay: 0.0005
+  min_lr_ratio: 0.01
+  early_stopping_patience: 25
+  ema_decay: 0.0
+eval:
+  threshold: 0.5
+  min_area: 0
+  fov_mask: true

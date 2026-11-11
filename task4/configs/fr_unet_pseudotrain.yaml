@@ -1,0 +1,20 @@
+extends: fr_unet_official_patch_drive.yaml
+data:
+  preprocessing: raw
+  input_channels: 1
+  normalization: unit
+  train_patch_size: 64
+  pseudo:
+    enabled: true
+    root: "pseudo_data/test"
+    repeat: 3
+model:
+  in_channels: 1
+  init_checkpoint: "weights/fr_unet_drive_epoch40_packaged.pt"
+train:
+  batch_size: 48
+  patches_per_image: 48
+  epochs: 10
+  early_stopping_patience: 4
+  lr: 0.00001
+  ema_decay: 0.0

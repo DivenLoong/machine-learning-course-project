@@ -1,0 +1,6 @@
+extends: sgl_selfdistill_iter3.yaml
+data:
+  train_all: true
+train:
+  epochs: 1
+  early_stopping_patience: 1

@@ -1,0 +1,13 @@
+\begin{tikzpicture}[node distance=7mm and 6mm]
+\node[box] (input) {眼底图像\\灰度，$1\times512^2$};
+\node[box,right=of input] (fr) {FR-UNet 多分辨率\\残差块与特征交换};
+\node[box,right=of fr] (p) {五个全分辨率头\\平均 logits、Sigmoid};
+\node[box,below=of p] (dti) {双阈值迭代\\高 0.65，低 0.40};
+\node[box,left=of dti] (fov) {视野掩膜与连通域\\面积至少 16 像素};
+\node[outputbox,left=of fov] (rle) {二值掩膜\\按行展开、RLE};
+\draw[flow] (input)--(fr);
+\draw[flow] (fr)--(p);
+\draw[flow] (p)--(dti);
+\draw[flow] (dti)--(fov);
+\draw[flow] (fov)--(rle);
+\end{tikzpicture}

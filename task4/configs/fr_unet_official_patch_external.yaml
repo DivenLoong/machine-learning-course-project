@@ -1,0 +1,11 @@
+extends: fr_unet_patch_external.yaml
+data:
+  preprocessing: raw
+  input_channels: 1
+model:
+  in_channels: 1
+  init_checkpoint: "weights/fr_unet_drive_epoch40.pth"
+train:
+  lr: 0.0001
+  epochs: 40
+  ema_decay: 0.0

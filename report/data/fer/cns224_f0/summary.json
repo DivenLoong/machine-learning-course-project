@@ -1,0 +1,11 @@
+{
+  "acc": 0.7301502823829651,
+  "epoch": 11,
+  "which": "ema",
+  "final_val_acc": 0.7301502823829651,
+  "minutes": 113.17,
+  "params_m": 49.459,
+  "backbone": "convnext_small.fb_in22k_ft_in1k",
+  "res": 224,
+  "fold": 0
+}
