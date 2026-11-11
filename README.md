@@ -9,7 +9,7 @@
 | [眼底中心凹定位](task3/README.md) | 用 EfficientNet-B1 预测热图，比较血管输入与 VascX 坐标融合 | 9.90927 px | 19.54239 px |
 | [DRIVE 血管分割](task4/README.md) | 用 FR-UNet 官方权重推理，比较双阈值、视野过滤和原生分辨率 U-Net | 0.81766 Dice | 0.82534 Dice |
 
-提交编号、文件名和哈希见 [Kaggle 记录](report/data/kaggle_scores.csv)。各任务的本地验证口径和历史记录缺项见[证据审计](report/evidence_audit.md)。
+提交编号、文件名和哈希见 [Kaggle 记录](report/data/kaggle_scores.csv)。
 
 ## 目录
 
@@ -18,7 +18,6 @@ task1/            幼苗分类
 task2/src/        表情分类
 task3/solution/   中心凹定位
 task4/            血管分割、配置与测试
-report/           LaTeX、实验记录和图表
 requirements.txt  四项任务的依赖
 ```
 
