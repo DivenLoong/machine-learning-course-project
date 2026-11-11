@@ -12,3 +12,11 @@ python predict.py --tags fix_cnx320 --tta-flip --out submission_demo.csv
 `predict.py` 写出 `outputs/test_probs.npz`。需要验证伪标签阶段时，将该文件路径传入 `train.py --pseudo outputs/test_probs.npz --pseudo-thresh 0.9`，为不同阶段使用独立的运行标记。融合时将多个完整运行标记以逗号分隔传入 `predict.py --tags`。先验可用 `blend.py` 估计，再通过 `apply_prior.py --probs … --prior-json … --out …` 生成提交。
 
 五折结果与代表性历史配置见 [report/data/plant](../report/data/plant)。最终引用的 v16 在两侧榜单均为 0.9735。v13 与 v16 的本地 CSV 哈希一致。旧报告的四配置记录与文件名可查，精确推理命令和先验文件对应待确认。同源库版本的 0.9947 具有测试图重叠风险，详见证据审计。原任务的独立代码记录见[植物分类仓库](https://github.com/DivenLoong/plant-seedling-classification)。
+
+若保留原课程运行中的 `outputs/test_probs.npz` 和 `outputs/blend.json`，可复算已发布分数对应的 v16 标签与 CSV 字节。先放置课程样例 CSV，然后在 task1 执行：
+
+```shell
+python apply_prior.py --probs outputs/test_probs.npz --prior-json outputs/blend.json --out submission_v16_check.csv
+```
+
+用 SHA-256 `8d1d42ed430588da8838f93fefdec165e8e813ad5838db6981c8cabed201dcb2` 校验。多组历史概率和先验组合可产生同一个标签文件，因此字节重现用于核验产物，原 v16 的训练成员与实际调用记录仍按证据审计说明。
