@@ -39,13 +39,3 @@ python -m pip install -r requirements.txt
 | `task3/solution/` | `src/train.py` 训练热图模型，`src/predict.py` 输出原图坐标 |
 | `task4/` | `inference.py` 运行 FR-UNet，`vendor/reti_ves_seg/train.py` 训练原生 U-Net 对照 |
 
-## 实验报告
-
-[LaTeX 主文件](report/main.tex)和[复现附录](report/chapters/reproduction.tex)随仓库提供。在已安装 XeLaTeX、BibTeX、Fandol、ctex、gbt7714 和 TikZ 的环境下，从仓库根目录运行：
-
-```shell
-cd report
-latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build main.tex
-```
-
-公开源码编译出的 PDF 位于 `report/build/main.pdf`。含学生信息的正式 PDF 随课程材料本地交付，路径为 `report/build/机器学习课程设计综合实验报告.pdf`。第三方模型和许可证见[归属说明](task4/THIRD_PARTY_NOTICES.md)，写作与证据整理的工具说明见[报告第五章](report/chapters/conclusion.tex)。
